@@ -119,3 +119,21 @@ class operacionesPolinomios(object):
                 pol2 = pol2.sig
             pol1 = pol1.sig
         return paux
+    
+    def dividir(polinomio1, polinomio2):
+        """"Divide dos polinomios y devuelve el resultado."""
+        paux = Polinomio()
+        pol1 = polinomio1.termino_mayor
+        while(pol1 is not None):
+            pol2 = polinomio2.termino_mayor
+            while(pol2 is not None):
+                termino = pol1.info.termino - pol2.info. termino
+                valor = pol1.info.valor / pol2.info. valor
+                if(operacionesPolinomios.obtener_valor (paux, termino) != 0):
+                    valor += operacionesPolinomios.obtener_valor (paux, termino)
+                    operacionesPolinomios.modificar_termino(paux, termino, valor)
+                else:
+                    operacionesPolinomios.agregar_termino (paux, termino, valor)
+                pol2 = pol2.sig
+            pol1 = pol1.sig
+        return paux
