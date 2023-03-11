@@ -6,7 +6,7 @@ aux = Nodo( )
 aux.info = "Primer nodo"
 palabra = input('Ingrese una palabra: ')	
 naux = aux
-while (palabra != ""):
+while (palabra == ""):
     nodo = Nodo( )
     nodo.info = palabra
     naux.sig = nodo
@@ -18,48 +18,83 @@ while (aux is not None):
     aux = aux.sig
 
 class datoPolinomio(object):
-    """Clase dato polinomio."""
+    """Clase dato operaciones."""
 
     def _init_(self, valor, termino):
         """Crea un dato polinomio con valor y termino."""
         self.valor = valor
         self.termino = termino
 
+
+
 class Polinomio(object):
-    """Clase polinomio."""
+    """Clase operaciones."""
 
     def _init_(self):
         """Crea un polinomio del grado cero."""
         self.termino_mayor = None
         self.grado = -1
     
-
+class operaciones(object):
     def agregar_termino(polinomio, termino, valor):
-        """Agrega un termino y su valor al polinomio. """
+        """Agrega un termino y su valor al operaciones. """
+        polinomio=Polinomio()
         aux = Nodo( )
-        dato = datoPolinomio(valor, termino)
+        dato = datoPolinomio()
+        dato.valor = valor
+        dato.termino = termino
         aux.info = dato
+
+        # comparo el termino con el grado del polinomio
         if(termino > polinomio.grado):
-            aux.sig = polinomio.termino_mayor
-            polinomio.termino_mayor = aux
-            polinomio.grado = termino
+            aux.sig=polinomio.termino_mayor
+            polinomio.termino_mayor=aux
+            polinomio.grado=termino
         else:
-            actual = polinomio.termino_mayor
-            while(actual.sig is not None and termino < actual.sig.info.termino):
-                actual = actual.sig
-            aux.sig = actual.sig
-            actual.sig = aux
+            actual=polinomio.termino_mayor
+            while(actual.sig is not None and actual.sig.info.termino > termino):
+                actual=actual.sig
+            aux.sig=actual.sig
+            actual.sig=aux
+    
+
+
+    
+    def eliminar_termino(polinomio, termino):
+        """Elimina un termino del operaciones."""
+        aux = operaciones.termino_mayor
+        if(aux is not None):
+            if(aux.info.termino == termino):
+                operaciones.termino_mayor = aux.sig
+                del aux
+            else:
+                while(aux.sig is not None and aux.sig.info.termino != termino):
+                    aux = aux.sig
+                if(aux.sig is not None):
+                    aux.sig = aux.sig.sig
+                    del aux.sig
+
+    def determinar_si_existee_termino(polinomio, termino):
+        """Determina si existe un termino en el operaciones."""
+        # consultar si el resultado es distinto de cero para determinar si el polinomio tiene ese término o no
+        aux = operaciones.termino_mayor
+        while(aux is not None and aux.info.termino != termino):
+            aux = aux.sig
+        if(aux is not None):
+            return True
+        return False
+        
 
     def modificar_termino(polinomio, termino, valor):
-        """Modifica el valor de un termino del polinomio."""
-        aux = polinomio.termino_mayor
+        """Modifica el valor de un termino del operaciones."""
+        aux = operaciones.termino_mayor
         while(aux is not None and aux.info.termino != termino):
             aux = aux.sig
         aux.info.valor = valor
 
     def obtener_valor (polinomio, termino):
-        """Devuelve el valor de un termino del polinomio."""
-        aux = polinomio.termino_mayor
+        """Devuelve el valor de un termino del operaciones."""
+        aux = operaciones.termino_mayor
         while(aux is not None and aux. info.termino > termino):
             aux = aux.sig
         if(aux is not None and aux.info.termino == termino): 
@@ -68,8 +103,8 @@ class Polinomio(object):
             return 0
 
     def mostrar (polinomio):
-        """Muestra el polinomio."""
-        aux = polinomio.termino_mayor
+        """Muestra el operaciones."""
+        aux = operaciones.termino_mayor
         pol = ''
         if (aux is not None):
             while(aux is not None):
@@ -86,9 +121,9 @@ class Polinomio(object):
     
         mayor = polinomio1 if (polinomio1.grado > polinomio2.grado) else polinomio2 
         for i in range(0, mayor.grado+1):
-            total = Polinomio.obtener_valor(polinomio1, 1) + Polinomio.obtener_valor (polinomio2, 1)
+            total = operaciones.obtener_valor(polinomio1, 1) + operaciones.obtener_valor (polinomio2, 1)
             if(total != 0):
-                Polinomio.agregar_termino(paux, i, total)
+                operaciones.agregar_termino(paux, i, total)
         return paux
     
     def restar(polinomio1, polinomio2):
@@ -96,9 +131,9 @@ class Polinomio(object):
         paux = Polinomio()
         mayor = polinomio1 if (polinomio1.grado > polinomio2.grado) else polinomio2 
         for i in range(0, mayor.grado+1):
-            total = Polinomio.obtener_valor(polinomio1, 1) - Polinomio.obtener_valor (polinomio2, 1)
+            total = operaciones.obtener_valor(polinomio1, 1) - operaciones.obtener_valor (polinomio2, 1)
             if(total != 0):
-                Polinomio.agregar_termino(paux, i, total)
+                operaciones.agregar_termino(paux, i, total)
         return paux
 
 
@@ -111,11 +146,11 @@ class Polinomio(object):
             while(pol2 is not None):
                 termino = pol1.info.termino + pol2.info. termino
                 valor = pol1.info.valor * pol2.info. valor
-                if(Polinomio.obtener_valor (paux, termino) != 0):
-                    valor += Polinomio.obtener_valor (paux, termino)
-                    Polinomio.modificar_termino(paux, termino, valor)
+                if(operaciones.obtener_valor (paux, termino) != 0):
+                    valor += operaciones.obtener_valor (paux, termino)
+                    operaciones.modificar_termino(paux, termino, valor)
                 else:
-                    Polinomio.agregar_termino (paux, termino, valor)
+                    operaciones.agregar_termino (paux, termino, valor)
                 pol2 = pol2.sig
             pol1 = pol1.sig
         return paux
@@ -129,11 +164,29 @@ class Polinomio(object):
             while(pol2 is not None):
                 termino = pol1.info.termino - pol2.info. termino
                 valor = pol1.info.valor / pol2.info. valor
-                if(Polinomio.obtener_valor (paux, termino) != 0):
-                    valor += Polinomio.obtener_valor (paux, termino)
-                    Polinomio.modificar_termino(paux, termino, valor)
+                if(operaciones.obtener_valor (paux, termino) != 0):
+                    valor += operaciones.obtener_valor (paux, termino)
+                    operaciones.modificar_termino(paux, termino, valor)
                 else:
-                    Polinomio.agregar_termino (paux, termino, valor)
+                    operaciones.agregar_termino (paux, termino, valor)
                 pol2 = pol2.sig
             pol1 = pol1.sig
         return paux
+    
+# Probando la clase Polinomio
+p1 = Polinomio()
+p2 = Polinomio()
+operaciones.agregar_termino(p1, 0, 2)
+operaciones.agregar_termino(p1, 1, 3)
+operaciones.agregar_termino(p1, 2, 4)
+operaciones.agregar_termino(p2, 0, 1)
+operaciones.agregar_termino(p2, 1, 2)
+operaciones.agregar_termino(p2, 2, 3)
+operaciones.agregar_termino(p2, 3, 4)
+print("Polinomio 1: ", operaciones.mostrar(p1))
+print("Polinomio 2: ", operaciones.mostrar(p2))
+print("Suma: ", operaciones.mostrar(operaciones.sumar(p1, p2)))
+print("Resta: ", operaciones.mostrar(operaciones.restar(p1, p2)))
+print("Multiplicación: ", operaciones.mostrar(operaciones.multiplicar(p1, p2)))
+print("División: ", operaciones.mostrar(operaciones.dividir(p1, p2)))
+
