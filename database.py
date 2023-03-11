@@ -34,6 +34,76 @@ class Polinomio(object):
         """Crea un polinomio del grado cero."""
         self.termino_mayor = None
         self.grado = -1
+
+    def _str_(self):
+        """Muestra el polinomio."""
+        aux = self.termino_mayor
+        pol = ''
+        if (aux is not None):
+            while(aux is not None):
+                signo = '' 
+                if(aux. info.valor > 0):
+                    signo += '+'
+                pol += signo + str(aux.info.valor)+"x^"+str(aux.info.termino)
+                aux = aux.sig
+        return pol
+    
+    # Add a polynomial
+    def add(self, other):
+        """Add two polynomials."""
+        paux = Polinomio()
+        mayor = self if (self.grado > other.grado) else other 
+        for i in range(0, mayor.grado+1):
+            total = self.obtener_valor(i) + other.obtener_valor(i)
+            if(total != 0):
+                paux.agregar_termino(i, total)
+        return paux
+    
+    # Subtract a polynomial
+    def sub(self, other):
+        """Subtract two polynomials."""
+        paux = Polinomio()
+        mayor = self if (self.grado > other.grado) else other 
+        for i in range(0, mayor.grado+1):
+            total = self.obtener_valor(i) - other.obtener_valor(i)
+            if(total != 0):
+                paux.agregar_termino(i, total)
+        return paux
+    
+    # Multiply a polynomial
+    def mul(self, other):
+        """Multiply two polynomials."""
+        paux = Polinomio()
+        for i in range(0, self.grado+1):
+            for j in range(0, other.grado+1):
+                total = self.obtener_valor(i) * other.obtener_valor(j)
+                if(total != 0):
+                    paux.agregar_termino(i+j, total)
+        return paux
+    
+    # Divide a polynomial
+    def div(self, other):
+        """Divide two polynomials."""
+        paux = Polinomio()
+        for i in range(0, self.grado+1):
+            for j in range(0, other.grado+1):
+                total = self.obtener_valor(i) / other.obtener_valor(j)
+                if(total != 0):
+                    paux.agregar_termino(i+j, total)
+        return paux
+    
+    # Get the value of a polynomial
+    def obtener_valor(self, termino):
+        """Get the value of a polynomial."""
+        aux = self.termino_mayor
+        while(aux is not None and aux.info.termino != termino):
+            aux = aux.sig
+        if(aux is not None):
+            return aux.info.valor
+        return 0
+    
+
+
     
 class operaciones(object):
     def agregar_termino(polinomio, termino, valor):
@@ -44,12 +114,15 @@ class operaciones(object):
         dato.valor = valor
         dato.termino = termino
         aux.info = dato
+        aux.sig = None
 
         # comparo el termino con el grado del polinomio
         if(termino > polinomio.grado):
-            aux.sig=polinomio.termino_mayor
-            polinomio.termino_mayor=aux
-            polinomio.grado=termino
+            # si es mayor, lo agrego al principio
+            aux.sig = polinomio.termino_mayor
+            polinomio.termino_mayor = aux
+            polinomio.grado = termino
+
         else:
             actual=polinomio.termino_mayor
             while(actual.sig is not None and actual.sig.info.termino > termino):
@@ -172,21 +245,3 @@ class operaciones(object):
                 pol2 = pol2.sig
             pol1 = pol1.sig
         return paux
-    
-# Probando la clase Polinomio
-p1 = Polinomio()
-p2 = Polinomio()
-operaciones.agregar_termino(p1, 0, 2)
-operaciones.agregar_termino(p1, 1, 3)
-operaciones.agregar_termino(p1, 2, 4)
-operaciones.agregar_termino(p2, 0, 1)
-operaciones.agregar_termino(p2, 1, 2)
-operaciones.agregar_termino(p2, 2, 3)
-operaciones.agregar_termino(p2, 3, 4)
-print("Polinomio 1: ", operaciones.mostrar(p1))
-print("Polinomio 2: ", operaciones.mostrar(p2))
-print("Suma: ", operaciones.mostrar(operaciones.sumar(p1, p2)))
-print("Resta: ", operaciones.mostrar(operaciones.restar(p1, p2)))
-print("Multiplicación: ", operaciones.mostrar(operaciones.multiplicar(p1, p2)))
-print("División: ", operaciones.mostrar(operaciones.dividir(p1, p2)))
-
