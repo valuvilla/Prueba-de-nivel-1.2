@@ -25,6 +25,7 @@ class Polinomio(object):
         """Agrega un termino y su valor al Polinomio. """
         polinomio=Polinomio()
         polinomio.grado= -1
+        polinomio.termino_mayor = None
         aux = Nodo()
         dato = datoPolinomio()
         dato.valor = valor
