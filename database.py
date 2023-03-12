@@ -11,25 +11,6 @@ class datoPolinomio(object):
         self.valor = valor #coeficiente
         self.termino = termino #exponente
 
-
-
-class Polinomio(object):
-    """Clase Polinomio."""
-
-    def __init__(self):
-        """Crea un polinomio del grado cero."""
-        self.termino_mayor = None
-        self.grado = -1
-    
-    class datoPolinomio(object):
-    """Clase dato polinomio"""
-
-    def __init__(self, valor, termino):
-        """Crea un dato polinomio con valor y término"""
-        self.valor = valor
-        self.termino = termino
-
-
 class Polinomio(object):
     """Clase polinomio"""
 
@@ -61,6 +42,18 @@ class Polinomio(object):
             aux = aux.sig
         aux.info.valor = valor
 
+    def eliminar_termino(polinomio, termino):
+        """Elimina un termino del polinomio"""
+        if (polinomio.termino_mayor is not None):
+            if (polinomio.termino_mayor.info.termino == termino):
+                polinomio.termino_mayor = polinomio.termino_mayor.sig
+            else:
+                aux = polinomio.termino_mayor
+                while (aux.sig is not None and aux.sig.info.termino != termino):
+                    aux = aux.sig
+                if (aux.sig is not None and aux.sig.info.termino == termino):
+                    aux.sig = aux.sig.sig
+
     def obtener_valor(polinomio, termino):
         """Devuelve el valor de un termino del polinomio"""
         aux = polinomio.termino_mayor
@@ -71,19 +64,23 @@ class Polinomio(object):
         else:
             return 0
         
-    def mostrar(polinomio):
+    def mostrar_1(polinomio):
         """Muestra el polinomio"""
         aux = polinomio.termino_mayor
-        pol = ""
-        if (aux is not None):
-            while (aux is not None):
-                signo = ""
-                if aux.info.valor >= 0:
-                    signo += "+"
-                pol += signo + str(aux.info.valor) + "x^", str(aux.info.termino)
-                aux = aux.sig
-        return pol
-    
+        while (aux is not None):
+            print(aux.info.valor, "x^", aux.info.termino, " + ", end="")
+            aux = aux.sig
+        print("0")
+
+    def mostrar_2(polinomio):
+        """Muestra el polinomio"""
+        aux = polinomio.termino_mayor
+        pol=""
+        while (aux is not None):
+            signo= "+" if aux.info.valor > 0 else ""
+            pol = pol + signo + str(aux.info.valor) + "x^" + str(aux.info.termino)
+            aux = aux.sig
+        print(pol)
 
     def sumar(polinomio1, polinomio2):
         """Suma dos polinomios y devuelve el resultado."""
@@ -96,6 +93,25 @@ class Polinomio(object):
                 Polinomio.agregar_termino(paux, i, total)
         return paux
     
+    def sumar_2(polinomio1, polinomio2):
+        """Suma dos polinomios y devuelve el resultado."""
+        paux = Polinomio()
+        pol1 = polinomio1.termino_mayor
+        while(pol1 is not None):
+            pol2 = polinomio2.termino_mayor
+            while(pol2 is not None):
+                termino = pol1.info.termino + pol2.info. termino
+                valor = pol1.info.valor + pol2.info. valor
+                if(Polinomio.obtener_valor (paux, termino) != 0):
+                    valor += Polinomio.obtener_valor (paux, termino)
+                    Polinomio.modificar_termino(paux, termino, valor)
+                else:
+                    Polinomio.agregar_termino (paux, termino, valor)
+                pol2 = pol2.sig
+            pol1 = pol1.sig
+        return paux
+    
+
     def restar(polinomio1, polinomio2):
         """Resta dos polinomios y devuelve el resultado."""
         paux = Polinomio()
@@ -148,4 +164,17 @@ polinomio1 = Polinomio()
 polinomio2 = Polinomio()
 polinomio1.agregar_termino(1, 2) # 2x^1
 polinomio1.agregar_termino(2, 3) # 3x^2
-polinomio1.agregar_termino(3, 4) # 4x^3
+    
+#polinomio1.mostrar_1()
+polinomio1.mostrar_2()
+
+polinomio2.agregar_termino(1, 2) # 2x^1
+polinomio2.agregar_termino(2, 3) # 3x^2
+
+#polinomio2.mostrar_1()
+polinomio2.mostrar_2()
+
+print("Suma\n")
+
+polinomio3 = Polinomio.sumar_2(polinomio1, polinomio2)
+polinomio3.mostrar_2()
