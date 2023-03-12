@@ -1,3 +1,6 @@
+from colorama import Fore, Back, Style
+from termcolor import colored
+
 class Nodo (object):
     """clase nodo simplemente enlazado."""
     info, sig = None, None
@@ -89,19 +92,11 @@ class Polinomio(object):
     def sumar(polinomio1, polinomio2):
         """Suma dos polinomios y devuelve el resultado."""
         paux = Polinomio()
-        pol1 = polinomio1.termino_mayor
-        while(pol1 is not None):
-            pol2 = polinomio2.termino_mayor
-            while(pol2 is not None):
-                termino = pol1.info.termino + pol2.info. termino
-                valor = pol1.info.valor + pol2.info. valor
-                if(Polinomio.obtener_valor (paux, termino) != 0):
-                    valor += Polinomio.obtener_valor (paux, termino)
-                    Polinomio.modificar_termino(paux, termino, valor)
-                else:
-                    Polinomio.agregar_termino (paux, termino, valor)
-                pol2 = pol2.sig
-            pol1 = pol1.sig
+        mayor = polinomio1 if (polinomio1.grado > polinomio2.grado) else polinomio2 
+        for i in range(0, mayor.grado+1):
+            total = Polinomio.obtener_valor(polinomio1, i) + Polinomio.obtener_valor (polinomio2, i)
+            if(total != 0):
+                Polinomio.agregar_termino(paux, i, total)
         return paux
     
 
@@ -110,7 +105,7 @@ class Polinomio(object):
         paux = Polinomio()
         mayor = polinomio1 if (polinomio1.grado > polinomio2.grado) else polinomio2 
         for i in range(0, mayor.grado+1):
-            total = Polinomio.obtener_valor(polinomio1, 1) - Polinomio.obtener_valor (polinomio2, 1)
+            total = Polinomio.obtener_valor(polinomio1, i) - Polinomio.obtener_valor (polinomio2, i)
             if(total != 0):
                 Polinomio.agregar_termino(paux, i, total)
         return paux
@@ -137,35 +132,71 @@ class Polinomio(object):
     def dividir(polinomio1, polinomio2):
         """"Divide dos polinomios y devuelve el resultado."""
         paux = Polinomio()
-        pol1 = polinomio1.termino_mayor
-        while(pol1 is not None):
-            pol2 = polinomio2.termino_mayor
-            while(pol2 is not None):
-                termino = pol1.info.termino - pol2.info. termino
-                valor = pol1.info.valor / pol2.info. valor
-                if(Polinomio.obtener_valor (paux, termino) != 0):
-                    valor += Polinomio.obtener_valor (paux, termino)
-                    Polinomio.modificar_termino(paux, termino, valor)
-                else:
-                    Polinomio.agregar_termino (paux, termino, valor)
-                pol2 = pol2.sig
-            pol1 = pol1.sig
+        if(polinomio1.grado >= polinomio2.grado):
+            pol1 = polinomio1.termino_mayor
+            while(pol1 is not None):
+                termino = pol1.info.termino - polinomio2.termino_mayor.info.termino
+                valor = pol1.info.valor / polinomio2.termino_mayor.info.valor
+                Polinomio.agregar_termino(paux, termino, valor)
+                pol1 = pol1.sig
+        else:
+            print("No se puede dividir")
         return paux
     
-# Experimentacion
-polinomio1 = Polinomio()
-polinomio2 = Polinomio()
-polinomio1.agregar_termino(1, 2) # 2x^1
-polinomio1.agregar_termino(2, 3) # 3x^2
-    
-#polinomio1.mostrar()
-polinomio1.mostrar()
 
-polinomio2.agregar_termino(5,3) # 5x^3
-polinomio2.agregar_termino(3,1) # 3x^1
+if __name__ == "__main__":
+    # Experimentacion
+    polinomio1 = Polinomio()
+    polinomio2 = Polinomio()
+    polinomio1.agregar_termino(1, 2) # 2x^1
+    polinomio1.agregar_termino(2, 3) # 3x^2
+
+    print(colored(("Mostramos Polinomio 1").center(20), "red"))
+    polinomio1.mostrar()
+
+    print(colored(("Obtener valor del Polinomio 1").center(20), "red"))
+    print(polinomio1.obtener_valor(2))
+
+    print(colored(("Modificamos por término el valor del polinimio 1 ").center(20), "red"))
+    polinomio1.modificar_termino(2, 5)
+    polinomio1.mostrar()
+
+    print(colored("Existe el término 2 en el polinomio 1?".center(20), "red"))
+    print(polinomio1.existe_termino(2))
+
+    print(colored(("Eliminamos por término el valor del polinimio 1 ").center(20), "red"))
+    polinomio1.eliminar_termino(2)
+    polinomio1.mostrar()
 
 
-print("Suma\n")
+    polinomio2.agregar_termino(5,3) # 3x^5
+    polinomio2.agregar_termino(3,1) # 1x^3
 
-polinomio3 = Polinomio.sumar(polinomio1, polinomio2)
-polinomio3.mostrar_2()
+    print(colored(("Mostramos Polinomio 2").center(20), "blue"))
+    polinomio2.mostrar()
+
+
+    print(colored("Sumamos Polinomio 1 y Polinomio 2".center(20), "green"))
+    polinomio3 = Polinomio.sumar(polinomio1, polinomio2)
+    polinomio3.mostrar()
+
+    print(colored("Restamos Polinomio 1 y Polinomio 2".center(20), "green"))
+    polinomio4 = Polinomio.restar(polinomio1, polinomio2)
+    polinomio4.mostrar()
+
+    print(colored("Multiplicamos Polinomio 1 y Polinomio 2".center(20), "green"))
+    polinomio5 = Polinomio.multiplicar(polinomio1, polinomio2)
+    polinomio5.mostrar()
+
+
+    polinomio7=Polinomio()
+    polinomio7.agregar_termino(1, 2) # 2x^1
+    print(colored("Polinomio 7".center(20), "blue"))
+    (polinomio7.mostrar())
+
+
+    print(colored("Dividimos Polinomio 5 y Polinomio 7".center(20), "green"))
+    polinomio6 = Polinomio.dividir(polinomio5, polinomio7)
+    polinomio6.mostrar()
+    print(colored("FIN".center(20), "yellow"))
+
