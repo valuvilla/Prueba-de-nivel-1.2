@@ -191,12 +191,12 @@ if __name__ == "__main__":
 
     polinomio7=Polinomio()
     polinomio7.agregar_termino(1, 2) # 2x^1
-    print(colored("Polinomio 7".center(20), "blue"))
+    print(colored("Polinomio 7", "yellow"))
     (polinomio7.mostrar())
 
 
     print(colored("Dividimos Polinomio 5 y Polinomio 7".center(20), "green"))
     polinomio6 = Polinomio.dividir(polinomio5, polinomio7)
     polinomio6.mostrar()
-    print(colored("FIN".center(20), "yellow"))
+    print(Back.CYAN + ("Fin del programa").center(20) + Back.RESET)
 
