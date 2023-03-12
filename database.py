@@ -6,7 +6,7 @@ class Nodo (object):
 class datoPolinomio(object):
     """Clase dato Polinomio."""
 
-    def _init_(self, valor, termino):
+    def __init__(self, valor, termino):
         """Crea un dato polinomio con valor y termino."""
         self.valor = valor #coeficiente
         self.termino = termino #exponente
@@ -16,7 +16,7 @@ class datoPolinomio(object):
 class Polinomio(object):
     """Clase Polinomio."""
 
-    def _init_(self, termino_mayor, grado):
+    def __init__(self):
         """Crea un polinomio del grado cero."""
         self.termino_mayor = None
         self.grado = -1
@@ -24,12 +24,8 @@ class Polinomio(object):
     def agregar_termino(polinomio, termino, valor):
         """Agrega un termino y su valor al Polinomio. """
         polinomio=Polinomio()
-        polinomio.grado= -1
-        polinomio.termino_mayor = None
         aux = Nodo()
-        dato = datoPolinomio()
-        dato.valor = valor
-        dato.termino = termino
+        dato = datoPolinomio(valor, termino)
         aux.info = dato
     
 
@@ -65,7 +61,8 @@ class Polinomio(object):
     def determinar_si_existee_termino(polinomio, termino):
         """Determina si existe un termino en el Polinomio."""
         # consultar si el resultado es distinto de cero para determinar si el polinomio tiene ese término o no
-        aux = Polinomio.termino_mayor
+        polinomio=Polinomio()
+        aux = polinomio.termino_mayor
         while(aux is not None and aux.info.termino != termino):
             aux = aux.sig
         if(aux is not None):
@@ -75,7 +72,8 @@ class Polinomio(object):
 
     def modificar_termino(polinomio, termino, valor):
         """Modifica el valor de un termino del Polinomio."""
-        aux = Polinomio.termino_mayor
+        polinomio=Polinomio()
+        aux = polinomio.termino_mayor
         while(aux is not None and aux.info.termino != termino):
             aux = aux.sig
         aux.info.valor = valor
@@ -92,7 +90,8 @@ class Polinomio(object):
 
     def mostrar (polinomio):
         """Muestra el Polinomio."""
-        aux = Polinomio.termino_mayor
+        polinomio=Polinomio()
+        aux = polinomio.termino_mayor
         pol = ''
         if (aux is not None):
             while(aux is not None):
@@ -164,4 +163,6 @@ class Polinomio(object):
 # Experimentacion
 polinomio1 = Polinomio()
 polinomio2 = Polinomio()
-Polinomio.agregar_termino(polinomio1, 0, 1)
+polinomio1.agregar_termino(1, 2) # 2x^1
+polinomio1.agregar_termino(2, 3) # 3x^2
+polinomio1.agregar_termino(3, 4) # 4x^3
