@@ -64,15 +64,8 @@ class Polinomio(object):
         else:
             return 0
         
-    def mostrar_1(polinomio):
-        """Muestra el polinomio"""
-        aux = polinomio.termino_mayor
-        while (aux is not None):
-            print(aux.info.valor, "x^", aux.info.termino, " + ", end="")
-            aux = aux.sig
-        print("0")
 
-    def mostrar_2(polinomio):
+    def mostrar(polinomio):
         """Muestra el polinomio"""
         aux = polinomio.termino_mayor
         pol=""
@@ -82,18 +75,18 @@ class Polinomio(object):
             aux = aux.sig
         print(pol)
 
+    def existe_termino(polinomio, termino):
+        """Determina si existe un termino en el polinomio"""
+        aux = polinomio.termino_mayor
+        while (aux is not None and aux.info.termino != termino):
+            aux = aux.sig
+        if (aux is not None and aux.info.termino == termino):
+            return True
+        else:
+            return False
+
+    
     def sumar(polinomio1, polinomio2):
-        """Suma dos polinomios y devuelve el resultado."""
-        paux = Polinomio()
-    
-        mayor = polinomio1 if (polinomio1.grado > polinomio2.grado) else polinomio2 
-        for i in range(0, mayor.grado+1):
-            total = Polinomio.obtener_valor(polinomio1, 1) + Polinomio.obtener_valor (polinomio2, 1)
-            if(total != 0):
-                Polinomio.agregar_termino(paux, i, total)
-        return paux
-    
-    def sumar_2(polinomio1, polinomio2):
         """Suma dos polinomios y devuelve el resultado."""
         paux = Polinomio()
         pol1 = polinomio1.termino_mayor
@@ -165,16 +158,14 @@ polinomio2 = Polinomio()
 polinomio1.agregar_termino(1, 2) # 2x^1
 polinomio1.agregar_termino(2, 3) # 3x^2
     
-#polinomio1.mostrar_1()
-polinomio1.mostrar_2()
+#polinomio1.mostrar()
+polinomio1.mostrar()
 
-polinomio2.agregar_termino(1, 2) # 2x^1
-polinomio2.agregar_termino(2, 3) # 3x^2
+polinomio2.agregar_termino(5,3) # 5x^3
+polinomio2.agregar_termino(3,1) # 3x^1
 
-#polinomio2.mostrar_1()
-polinomio2.mostrar_2()
 
 print("Suma\n")
 
-polinomio3 = Polinomio.sumar_2(polinomio1, polinomio2)
+polinomio3 = Polinomio.sumar(polinomio1, polinomio2)
 polinomio3.mostrar_2()
