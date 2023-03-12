@@ -151,7 +151,7 @@ if __name__ == "__main__":
     polinomio1.agregar_termino(1, 2) # 2x^1
     polinomio1.agregar_termino(2, 3) # 3x^2
 
-    print(colored(("Mostramos Polinomio 1").center(20), "red"))
+    print(colored(("Polinomio 1"), "red"))
     polinomio1.mostrar()
 
     print(colored(("Obtener valor del Polinomio 1").center(20), "red"))
@@ -172,7 +172,7 @@ if __name__ == "__main__":
     polinomio2.agregar_termino(5,3) # 3x^5
     polinomio2.agregar_termino(3,1) # 1x^3
 
-    print(colored(("Mostramos Polinomio 2").center(20), "blue"))
+    print(colored(("Polinomio 2"), "blue"))
     polinomio2.mostrar()
 
 
